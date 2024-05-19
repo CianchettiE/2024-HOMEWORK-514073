@@ -10,6 +10,8 @@ public class ComandoGuarda implements Comando {
 		// TODO Auto-generated method stub
 		io.mostraMessaggio("la stanza corrente è:\n");
 		io.mostraMessaggio(partita.getStanzaCorrente().getDescrizione());
+		io.mostraMessaggio("nella borsa sono presenti i seguenti oggetti:\n");
+		io.mostraMessaggio(partita.getGiocatore().getBorsa().getContenutoOrdinatoPerNome().toString());
 	}
 
 	@Override

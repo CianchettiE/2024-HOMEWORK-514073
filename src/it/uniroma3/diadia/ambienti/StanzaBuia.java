@@ -17,3 +17,4 @@ public class StanzaBuia extends Stanza{
 			return "qui c'è un buio pesto";
 	}
 }
+

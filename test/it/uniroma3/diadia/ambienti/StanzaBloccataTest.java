@@ -24,7 +24,7 @@ public class StanzaBloccataTest {
    
     @Test
     public void testGetStanzaAdiacentePortaChiusa() {
-        assertNull(stanzaBloccata.getStanzaAdiacente("nord"));
+        assertEquals(stanza.getDescrizione(),stanzaBloccata.getStanzaAdiacente("nord")+"\nla direzione nord è bloccata");
     }
 
     @Test

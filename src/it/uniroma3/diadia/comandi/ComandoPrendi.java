@@ -21,6 +21,10 @@ public class ComandoPrendi implements Comando {
 		if(partita.getStanzaCorrente().hasAttrezzo(this.nomeAttrezzo)) {
 			Attrezzo a=null;
 			a=partita.getStanzaCorrente().getAttrezzo(nomeAttrezzo);
+			if(partita.getGiocatore().getBorsa().getPeso()+a.getPeso()>partita.getGiocatore().getBorsa().getPesoMax()) {
+				io.mostraMessaggio("l'oggetto è troppo pesante");
+				return;
+			}
 			partita.getGiocatore().getBorsa().addAttrezzo(partita.getStanzaCorrente().getAttrezzo(this.nomeAttrezzo));
 			partita.getStanzaCorrente().removeAttrezzo(a);
 			io.mostraMessaggio("l'oggetto è stato aggiunto alla borsa");
