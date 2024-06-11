@@ -5,54 +5,62 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.Stanza;
-import it.uniroma3.diadia.giocatore.Giocatore;
 
 public class PartitaTest {
-	
-	private Partita partita;
-	private Stanza stanzaCorrente;
-	
+	private Partita game1;      //Invoca creaStanze();
+	private Stanza biblioteca;
+	private Stanza aula1;
+
+
 	@Before
-	public void setUp() {
-		this.partita=new Partita();
-		this.stanzaCorrente=new Stanza("stanzaCorrente");
-		this.partita.setStanzaCorrente(stanzaCorrente);
-		
+	public void setUp() throws Exception {
+		game1= new Partita();      //Invoca creaStanze();
+		biblioteca = new Stanza("Biblioteca");
+		aula1= new Stanza("aula1");
+
+	}
+	
+    @Test
+    public void testGetStanzaCorrenteDefault() {
+    	assertEquals("atrio", game1.getStanzaCorrente().getNome());
+    }
+    @Test
+    public void testGetStanzaCorrente() {
+    	game1.setStanzaCorrente(aula1);
+    	assertSame(aula1, game1.getStanzaCorrente());
+    }
+	
+	@Test
+	public void testGetStanzaVincenteDefault() {
+		/*AssertSame fallirebbe, riferimenti ad oggetti diversi*/
+		assertEquals("biblioteca",game1.getStanzaVincente().getNome());
+	}
+	
+	
+	public void testVintaStanzaNonVincente() {
+		game1.setStanzaCorrente(aula1);
+		assertFalse(game1.vinta());
 	}
 
+	
+	public void testIsFinitaStanzaNonVincente() {
+		game1.setStanzaCorrente(aula1);
+		assertFalse(game1.isFinita());
+	}
+	
+	public void testIsFinitaCfu() {
+		game1.setCfu(0);
+		assertTrue(game1.isFinita());
+	} 
 	@Test
-	public void testGetStanzaCorrente() {
-		assertEquals(this.stanzaCorrente,this.partita.getStanzaCorrente());
+	public void testGetCfuDefault() {
+		assertEquals(20,game1.getCfu());
 	}
 	
 	@Test
-	public void testIsFinita() {
-		this.partita.setFinita();
-		assertEquals(true,this.partita.isFinita());
+	public void testGetCfuModificati() {
+		game1.setCfu(22);
+		assertEquals(22,game1.getCfu());
 	}
-	
-	@Test
-	public void testVinta() {
-		this.partita.setStanzaCorrente(this.partita.getLabirinto().getStanzaVincente());
-		assertEquals(true,this.partita.vinta());
-	}
-	
-	@Test
-	public void testGetLabirinto() {
-		Labirinto labirinto=new Labirinto();
-		labirinto.equals(this.partita.getLabirinto());
-	}
-	/*non so come verificare che tutto il labirinto sia uguale quindi mi sono limitatto
-	a verificare che fossero uguali la stanza iniziale e la stanza vincente*/
-	
-	@Test
-	public void testGetGiocatore() {
-		Giocatore giocatore=new Giocatore();
-		giocatore.equals(this.partita.getGiocatore());
-	}
-	//come sopra mi sono limitato a verificare che i Cfu e la borsa fossero uguali
-	
-
 }

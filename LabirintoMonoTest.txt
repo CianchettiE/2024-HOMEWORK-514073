@@ -1,0 +1,7 @@
+Stanze: N10
+Stanze speciali:
+Inizio: N10
+Vincente: N10
+Attrezzi: pinza 2 N10
+Uscite: 
+Personaggi:

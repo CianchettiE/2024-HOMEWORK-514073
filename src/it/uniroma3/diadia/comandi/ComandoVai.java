@@ -1,51 +1,47 @@
 package it.uniroma3.diadia.comandi;
 
-import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Stanza;
 
-public class ComandoVai implements Comando {
-	private String direzione;
-
-	public ComandoVai(String direzione) {
-		this.direzione = direzione;
-	}
-
-	/**
-	 * esecuzione del comando
-	 */
-	@Override
-	public void esegui(Partita partita,IO io) {
-		Stanza stanzaCorrente=partita.getStanzaCorrente();
-		Stanza prossimaStanza=null;
-		if(direzione==null) {
-			io.mostraMessaggio("Dove voui andare? \n Devi spevificare una direzione\n");
-			return;
-		}
-		prossimaStanza=stanzaCorrente.getStanzaAdiacente(this.direzione);
-		if(prossimaStanza==null) {
-			io.mostraMessaggio("Direzione inesistente\n");
-			return;
-		}
-		partita.setStanzaCorrente(prossimaStanza);
-		partita.getGiocatore().setCfu(partita.getGiocatore().getCfu()-1);
-		io.mostraMessaggio(partita.getStanzaCorrente().getDescrizione());
-	}
+public  class ComandoVai implements Comando {
 	
+	private String direzione;
+	private String nome= "vai";
+	 
+	/**
+	 * Cerca di andare in una direzione. Se c'e' una stanza ci entra 
+	 * e ne stampa il nome, altrimenti stampa un messaggio di errore
+	 */
+
+	@Override
+	public String esegui(Partita partita) {
+		StringBuilder msg= new StringBuilder();
+		if(this.direzione==null) 
+			msg.append("Dove vuoi andare ?");
+		else {
+		Stanza prossimaStanza = null;
+		prossimaStanza = partita.getStanzaCorrente().getStanzaAdiacente(direzione);
+		if (prossimaStanza == null)
+			msg.append("Direzione inesistente");
+		else {
+			partita.setStanzaCorrente(prossimaStanza);
+			int cfu = partita.getCfu();
+			partita.setCfu(cfu -1);
+		}
+		msg.append(partita.getStanzaCorrente().getDescrizione());
+		}
+		return msg.toString();
+	}
+
 	@Override
 	public void setParametro(String parametro) {
 		this.direzione=parametro;
+		
 	}
-
-	@Override
+	
+	@Override 
 	public String getNome() {
-		return "vai";
-		
+		return this.nome;
 	}
 
-	@Override
-	public String getParametro() {
-		return this.direzione;
-		
-	}
 }

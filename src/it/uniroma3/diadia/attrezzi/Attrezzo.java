@@ -1,4 +1,3 @@
-
 package it.uniroma3.diadia.attrezzi;
 
 import it.uniroma3.diadia.ambienti.Stanza;
@@ -43,6 +42,30 @@ public class Attrezzo implements Comparable<Attrezzo>{
 	public int getPeso() {
 		return this.peso;
 	}
+	
+	/**
+	 * Funzione hash per il tipo Attrezzo
+	 * @return un intero hashcode
+	 */
+	@Override
+	public int hashCode() {
+		return this.getNome().hashCode()+ this.getPeso();
+	}
+	@Override
+	public boolean equals(Object o) {
+		Attrezzo that= (Attrezzo)o;
+		return this.getPeso()==that.getPeso()&&
+				this.getNome().equals(that.getNome());
+	}
+	
+	@Override
+	public int compareTo(Attrezzo that) {
+		int diff= this.getPeso()- that.getPeso();
+		if(diff!=0) {
+			return diff;
+		}
+		return this.getNome().compareTo(that.getNome());
+	}
 
 	/**
 	 * Restituisce una rappresentazione stringa di questo attrezzo
@@ -50,24 +73,6 @@ public class Attrezzo implements Comparable<Attrezzo>{
 	 */
 	public String toString() {
 		return this.getNome()+" ("+this.getPeso()+"kg)";
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		Attrezzo that=(Attrezzo)o;
-		return this.getNome().equals(that.getNome());
-		
-	}
-	
-	@Override
-	public int hashCode() {
-		return this.getNome().hashCode();
-		
-	}
-
-	@Override
-	public int compareTo(Attrezzo that) {
-		return this.getNome().compareTo(that.getNome());
 	}
 
 }

@@ -1,40 +1,46 @@
+
 package it.uniroma3.diadia;
 
+
+import java.io.IOException;
+
+import it.uniroma3.diadia.ambienti.FormatoFileNonValidoException;
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.Stanza;
+import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.giocatore.Giocatore;
 
 /**
  * Questa classe modella una partita del gioco
  *
  * @author  docente di POO
- * @see Stanza
+ * @see Labirinto,Giocatore
  * @version base
  */
 
 public class Partita {
 
-	private Stanza stanzaCorrente;
 	private boolean finita;
-	private Labirinto labirinto;
-	private Giocatore giocatore;
+	private Labirinto l1;
+	private Giocatore player1;
 	
-	public Partita(){
-		this.labirinto=new Labirinto();
-		this.stanzaCorrente=labirinto.getStanzaIniziale();
+	public Partita() throws FormatoFileNonValidoException, IOException{
+		this.l1= new Labirinto("Labirinto.txt");
+		this.player1= new Giocatore();
 		this.finita = false;
-		this.giocatore=new Giocatore();
 	}
-	
-	public Partita(Labirinto labirinto){
-		this.labirinto=labirinto;
-		this.stanzaCorrente=labirinto.getStanzaIniziale();
-		this.finita = false;
-		this.giocatore=new Giocatore();
+
+
+	public Stanza getStanzaVincente() {
+		return l1.getStanzaVincente();
 	}
-	
-	public void setLabirinto(Labirinto labirinto) {
-		this.labirinto=labirinto;
+
+	public void setStanzaCorrente(Stanza stanzaCorrente) {
+		l1.setStanzaCorrente(stanzaCorrente); 
+	}
+
+	public Stanza getStanzaCorrente() {
+		return l1.getStanzaCorrente();
 	}
 	
 	/**
@@ -42,7 +48,9 @@ public class Partita {
 	 * @return vero se partita vinta
 	 */
 	public boolean vinta() {
-		return this.stanzaCorrente== labirinto.getStanzaVincente();
+		/*return this.getStanzaCorrente()== this.getStanzaVincente();*/
+		
+		return this.getStanzaCorrente().getNome().equals(this.getStanzaVincente().getNome());
 	}
 
 	/**
@@ -50,7 +58,7 @@ public class Partita {
 	 * @return vero se partita finita
 	 */
 	public boolean isFinita() {
-		return finita || vinta() || (giocatore.getCfu() == 0);
+		return finita || vinta() || (player1.getCfu()== 0);
 	}
 
 	/**
@@ -61,21 +69,35 @@ public class Partita {
 		this.finita = true;
 	}
 	
-	public Labirinto getLabirinto() {
-		return this.labirinto;
+	/**
+	 * 
+	 * @return un booleno che indica se il giocatore è ancora in gioco
+	 */
+	public boolean giocatoreIsVivo() {
+		return player1.getCfu()>=1;
 	}
 	
-	public Giocatore getGiocatore() {
-		return this.giocatore;
+	public int getCfu() {
+		return player1.getCfu();
+	}
+
+	public void setCfu(int cfu) {
+		this.player1.setCfu(cfu);	
+	}
+	/*Metodi aggiunti per le operazioni: prendere e posare*/
+	
+	public void addAttrezzo(Attrezzo attrezzo) {
+		player1.addAttrezzo(attrezzo);
 	}
 	
-	public Stanza getStanzaCorrente() {
-		return this.stanzaCorrente;
+	public void removeAttrezzo(Attrezzo attrezzo) {
+		player1.removeAttrezzo(attrezzo);
 	}
 	
-	public void setStanzaCorrente(Stanza s) {
-    	this.stanzaCorrente=s;
-    }
-	
-    
+	public boolean hasAttrezzo(String oggetto) {
+		return player1.hasAttrezzo(oggetto);
+	}
+	public Attrezzo getAttrezzo(String oggetto) {
+		return player1.getAttrezzo(oggetto);
+	}
 }

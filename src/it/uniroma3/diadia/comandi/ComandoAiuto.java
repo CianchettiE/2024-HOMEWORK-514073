@@ -1,38 +1,25 @@
 package it.uniroma3.diadia.comandi;
 
-import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 
-public class ComandoAiuto implements Comando {
-	
-	static final private String[] elencoComandi = {"Puoi eseguire i seguenti comandi:\n","vai (specifica direzione),", "aiuto,", "fine,","prendi (specifica oggetto),","posa (specifica oggetto),","guarda"};
+/**
+ * Stampa informazioni di aiuto.
+ */
+public  class ComandoAiuto extends AbstractComando  {
+	static final private String[] elencoComandi = {"vai", "aiuto", "fine","prendi","posa","guarda","interagisci","saluta","regala"};
+
+	public ComandoAiuto () {
+		super("aiuto");
+	}
+
 
 	@Override
-	public void esegui(Partita partita,IO io) {
-		// TODO Auto-generated method stub
+	public String esegui(Partita partita) {
+		StringBuilder msg= new StringBuilder();
 		for(int i=0; i< elencoComandi.length; i++) 
-			io.mostraMessaggio(elencoComandi[i]+" ");
+			msg.append(elencoComandi[i]+" ");
+		msg.append("\n");
+		return msg.toString();
 
 	}
-
-	@Override
-	public void setParametro(String parametro) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getNome() {
-		return "aiuto";
-		
-	}
-
-	@Override
-	public String getParametro() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 }

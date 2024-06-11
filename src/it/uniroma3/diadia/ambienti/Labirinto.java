@@ -1,69 +1,52 @@
 package it.uniroma3.diadia.ambienti;
 
+import java.io.IOException;
+import java.util.Set;
+
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
+/**
+ * Questa classe ha il compito di creare il labirinto
+ * e di memorizzare la stanza iniziale (entrata) e 
+ * quella finale (uscita).
+ * 
+ * @author fabrizio
+ * @see Stanza, Attrezzo
+ *
+ */
 public class Labirinto {
-	private Stanza stanzaIniziale;
+	
+	private Stanza stanzaCorrente;
 	private Stanza stanzaVincente;
+	private Set<Attrezzo> attrezzi;
 	
-	public Labirinto() {
-		creaStanze();
+	public Labirinto(String nomeFile) throws FormatoFileNonValidoException, IOException {
+		CaricatoreLabirinto c =
+		new CaricatoreLabirinto(nomeFile);
+		c.carica();
+		this.stanzaCorrente = c.getStanzaIniziale();
+		this.stanzaVincente = c.getStanzaVincente();
+		}
+
+    
+	public Stanza getStanzaCorrente() {
+		return stanzaCorrente;
 	}
+
+
+	public void setStanzaCorrente(Stanza stanzaCorrente) {
+		this.stanzaCorrente = stanzaCorrente;
+	}
+
+
+	public Stanza getStanzaVincente() {
+		return stanzaVincente;
+	}
+
 	
-	/**
-     * Crea tutte le stanze e le porte di collegamento
-     */
-    private void creaStanze() {
-
-		/* crea gli attrezzi */
-    	Attrezzo lanterna = new Attrezzo("lanterna",3);
-    	Attrezzo spada = new Attrezzo("spada",5);
-    	Attrezzo chiave = new Attrezzo("chiave",1);
-    	
-		/* crea stanze del labirinto */
-		Stanza atrio = new StanzaMagica("Atrio");
-		Stanza aulaN11 = new StanzaBloccata("Aula N11","est","chiave");
-		Stanza aulaN10 = new StanzaBuia("Aula N10","lanterna");
-		Stanza laboratorio = new StanzaMagica("Laboratorio Campus");
-		Stanza biblioteca = new Stanza("Biblioteca");
-		
-		/* collega le stanze */
-		atrio.impostaStanzaAdiacente("nord", biblioteca);
-		atrio.impostaStanzaAdiacente("est", aulaN11);
-		atrio.impostaStanzaAdiacente("sud", aulaN10);
-		atrio.impostaStanzaAdiacente("ovest", laboratorio);
-		aulaN11.impostaStanzaAdiacente("est", laboratorio);
-		aulaN11.impostaStanzaAdiacente("ovest", atrio);
-		aulaN10.impostaStanzaAdiacente("nord", atrio);
-		aulaN10.impostaStanzaAdiacente("est", aulaN11);
-		aulaN10.impostaStanzaAdiacente("ovest", laboratorio);
-		laboratorio.impostaStanzaAdiacente("est", atrio);
-		laboratorio.impostaStanzaAdiacente("ovest", aulaN11);
-		biblioteca.impostaStanzaAdiacente("sud", atrio);
-
-        /* pone gli attrezzi nelle stanze */
-		aulaN10.addAttrezzo(lanterna);
-		atrio.addAttrezzo(spada);
-		aulaN11.addAttrezzo(spada);
-		aulaN10.addAttrezzo(chiave);
-
-		// il gioco comincia nell'atrio
-		this.stanzaIniziale = atrio;  
-		this.stanzaVincente = biblioteca;
-    }
-    
-    public Stanza getStanzaIniziale() {
-    	return this.stanzaIniziale;
+	public Set<Attrezzo> getAttrezziLabirinto(){
+		return this.attrezzi;
 	}
-    
-    public Stanza getStanzaVincente() {
-		return this.stanzaVincente;
-	}
-    
-    @Override
-    public boolean equals(Object o) {
-    	Labirinto that=(Labirinto) o;
-    	return this.getStanzaIniziale()==that.getStanzaIniziale() && this.getStanzaVincente()==that.getStanzaVincente();
-    }
+
+	
 }
-

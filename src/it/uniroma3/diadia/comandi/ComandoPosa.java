@@ -1,46 +1,44 @@
 package it.uniroma3.diadia.comandi;
 
-import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Stanza;
+
+/**
+ * Permette di posare un oggetto togliendolo dalla 
+ * borsa per lasciarlo nella stanza
+ * @param oggetto
+ */
 
 public class ComandoPosa implements Comando {
-private String nomeAttrezzo;
-	
-	public ComandoPosa(String attrezzo) {
-		this.nomeAttrezzo=attrezzo;
-	}
-	
-	@Override
-	public void esegui(Partita partita,IO io) {
-		// TODO Auto-generated method stub
-		if(partita.getGiocatore().getBorsa().hasAttrezzo(nomeAttrezzo)) {
-			partita.getStanzaCorrente().addAttrezzo(partita.getGiocatore().getBorsa().getAttrezzo(nomeAttrezzo));
-			partita.getGiocatore().getBorsa().removeAttrezzo(nomeAttrezzo);
-			io.mostraMessaggio("l'oggetto è stato posato nella stanza");
-		}
-		else {
-			io.mostraMessaggio("l'oggetto non è presente nella borsa");
-		}
+	private String nomeAttrezzo;
+	private String nome= "posa";
 
+	@Override
+	public String esegui(Partita partita) {
+		Stanza stanzaAttuale= partita.getStanzaCorrente();
+		StringBuilder msg= new StringBuilder();
+		if(this.nomeAttrezzo==null)
+			msg.append("Nessun oggetto indicato");
+		else {
+			if(partita.hasAttrezzo(nomeAttrezzo)) {
+				stanzaAttuale.addAttrezzo(partita.getAttrezzo(nomeAttrezzo));
+				partita.removeAttrezzo(partita.getAttrezzo(nomeAttrezzo));      //remove from stanza
+				msg.append("L'oggetto:"+nomeAttrezzo+" è stato lasciato nella stanza");
+			}
+			else
+				msg.append("Oggetto non è presente nella borsa");
+		}
+		return msg.toString();
 	}
 
 	@Override
 	public void setParametro(String parametro) {
-		// TODO Auto-generated method stub
 		this.nomeAttrezzo=parametro;
-
 	}
-
-	@Override
+	
+	@Override 
 	public String getNome() {
-		return "posa";
-		
-	}
-
-	@Override
-	public String getParametro() {
-		return this.nomeAttrezzo;
-		
+		return this.nome;
 	}
 
 }

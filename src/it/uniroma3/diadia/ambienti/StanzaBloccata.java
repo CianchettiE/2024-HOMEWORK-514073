@@ -1,28 +1,37 @@
 package it.uniroma3.diadia.ambienti;
 
-public class StanzaBloccata extends Stanza {
-	private String direzioneBloccata;
-	private String apriPorta;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-	public StanzaBloccata(String nome,String direzione,String apriPorta) {
+public class StanzaBloccata extends Stanza{
+	private String direzioneBloccata;
+	private String Passepartout;
+
+	public StanzaBloccata(String nome,String direzione, String attrezzo) throws FileNotFoundException, IOException {
 		super(nome);
 		this.direzioneBloccata=direzione;
-		this.apriPorta=apriPorta;
+		this.Passepartout=attrezzo;
 	}
-
+	
 	@Override
 	public Stanza getStanzaAdiacente(String direzione) {
-		
-		if(!this.direzioneBloccata.equals(direzione)||this.hasAttrezzo(apriPorta)) {
-			return super.getStanzaAdiacente(direzione);
+		if(direzione==this.direzioneBloccata) {
+			if(super.hasAttrezzo(this.Passepartout))
+				return super.getStanzaAdiacente(direzione);
+			else {
+				return this;
+			}
 		}
-		return this;
+			 return super.getStanzaAdiacente(direzione);
 	}
 	
 	@Override
 	public String getDescrizione() {
-		return (super.getDescrizione() + "\nla direzione "+this.direzioneBloccata+" è bloccata");
-		
+		String descrizione;
+		descrizione= super.getDescrizione();
+		descrizione= descrizione +"\nLa stanza è bloccatta a "+ this.direzioneBloccata +" posare qui: "+ this.Passepartout + " per continuare in quella direzione";
+		return descrizione;
 	}
-
+	
+	
 }
